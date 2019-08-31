@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 public class Produto implements Serializable{
@@ -25,6 +27,7 @@ public class Produto implements Serializable{
 	
 	//Mapeamento Básico: Quando existe duas tabelas Muitos p/ muitos criar uma tabela que as 
 	//duas se conversem
+	@JsonBackReference // Faz esse comando um uma das tabelas de muito para muitos
 	@ManyToMany		//TABELA
 	@JoinTable(name= "PRODUTO_CATEGORIA",
 							    //Chave estrangeira Produto

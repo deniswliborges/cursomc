@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Categoria implements Serializable{
 	//6-Serialização
@@ -21,6 +23,7 @@ public class Categoria implements Serializable{
 	private Integer id;
 	private String nome;
 	
+	@JsonManagedReference // Para Trazer objetos instanciados
 	@ManyToMany(mappedBy="categorias")
 	//2-ASSOCIAÇÃO = Olhar no Banco de Dados se é de UM para Muitos, de Muitos para UM
 	//Ex.: Uma Categoria tem varios Produtos, então temos que criar uma associação
