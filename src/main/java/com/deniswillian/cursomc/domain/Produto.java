@@ -8,38 +8,44 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+
 @Entity
-public class Categoria implements Serializable{
-	//6-Serialização
+public class Produto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	//1-Atributos
 	private Integer id;
 	private String nome;
+	private Double preco;
 	
-	@ManyToMany(mappedBy="categorias")
-	//2-ASSOCIAÇÃO = Olhar no Banco de Dados se é de UM para Muitos, de Muitos para UM
-	//Ex.: Uma Categoria tem varios Produtos, então temos que criar uma associação
-	//do Produto dentro da class Categoria, ou seja, criar uma lista de Produtos na Class que será
-	//associada.
-	          //<class>    objeto       \\Array List java.util
-	private List<Produto> produtos = new ArrayList<>();
+	//Mapeamento Básico: Quando existe duas tabelas Muitos p/ muitos criar uma tabela que as 
+	//duas se conversem
+	@ManyToMany		//TABELA
+	@JoinTable(name= "PRODUTO_CATEGORIA",
+							    //Chave estrangeira Produto
+		joinColumns = @JoinColumn(name = "produto_id"),
+										//Chave estrangeira Categoria
+		inverseJoinColumns = @JoinColumn(name = "categoria_id")
+	)	
+	private List<Categoria> categorias = new ArrayList<>();
 	
-	//3-Criando construtor
-	public Categoria() {
+	//Construtor vazio = Método
+	public Produto() {
 	}
-
-	public Categoria(Integer id, String nome) {
+	//Construtor com parametros = Source = Construtor using Fields, desabilite a variavel que for de coleção
+	//nesse caso categoria, pois já informamos que eloe tem uma lista
+	public Produto(Integer id, String nome, Double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
-	
-	//4-Criando Get e Set(encapsulamento)
+
 	public Integer getId() {
 		return id;
 	}
@@ -56,15 +62,20 @@ public class Categoria implements Serializable{
 		this.nome = nome;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
+	public Double getPreco() {
+		return preco;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setPreco(Double preco) {
+		this.preco = preco;
 	}
-	
-	//5-@ HashCode e Equals (Implementação padrão: somente id) = Comparar os Objetos por conteúdo
+
+	public List<Categoria> getCategorias() {
+		return categorias;
+	}
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,7 +92,7 @@ public class Categoria implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -89,6 +100,6 @@ public class Categoria implements Serializable{
 			return false;
 		return true;
 	}
-
-		
+	
+	
 }
